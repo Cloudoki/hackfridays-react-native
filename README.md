@@ -12,8 +12,25 @@ A React-Native Todo List mobile app for HackFridays using Snowflake boilerplate.
 * Install dependencies
 
 ```
-cd hackfridays-react-native
+  cd hackfridays-react-native
 
-npm install
+  npm install
 ```
 
+
+## Testing your React Native Installation
+
+### Run React Native Packager
+```
+react-native start
+```
+
+### Starting the Android Virtual Device
+```
+android avd
+```
+
+### Running the App
+```
+react-native run-android
+```
