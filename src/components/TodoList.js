@@ -18,12 +18,11 @@ import
   Image,
   ListView,
   ScrollView,
-  // Button,
-  Alert
+  Keyboard
 } from 'react-native'
 
 import TodoItem from './TodoItem'
-import {Button, InputGroup} from 'native-base';
+import {Button, InputGroup, Input, Icon} from 'native-base';
 
 /**
  * ## Styles
@@ -32,10 +31,6 @@ let styles = StyleSheet.create({
   container: {
     marginLeft: 10,
     marginRight: 10
-  },
-  button: {
-    backgroundColor: '#FF3366',
-    borderColor: '#FF3366'
   },
   list: {
     marginTop: 20,
@@ -48,7 +43,8 @@ let styles = StyleSheet.create({
   },
   header: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 20
   },
   avatar: {
     width: 100,
@@ -88,20 +84,24 @@ let TodoList = React.createClass({
       return
     this.props.actions.addTodo(text)
     this.setState({text: ''})
+    Keyboard.dismiss()
   },
 
   render () {
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} keyboardShouldPersistTaps='always'>
           <View style={styles.header}>
             <Image style={styles.avatar} source={require('../images/2pac.jpg')}/>
             <Text style={styles.title}>2Pack List</Text>
           </View>
-          <TextInput value={this.state.text}
-                     placeholder="What do you need 2pack?"
-                     onChangeText={(text) => this._onChangeText(text)}
-                     onSubmitEditing={(event) => this._onSubmitTodo(event.nativeEvent.text)}/>
-          <Button block onPress={() => this._onSubmitTodo(this.state.text)}>Add Item</Button>
+          <InputGroup iconRight>
+            <Input value={this.state.text}
+                       placeholder="What do you need 2pack?"
+                       onChangeText={(text) => this._onChangeText(text)}
+                       onSubmitEditing={(event) => this._onSubmitTodo(event.nativeEvent.text)}/>
+            <Icon style={{right: 5}} onPress={() => {this._onSubmitTodo(this.state.text)}} name='ios-add'/>
+          </InputGroup>
+
           <ListView
             style={styles.list}
             dataSource={this.state.dataSource}

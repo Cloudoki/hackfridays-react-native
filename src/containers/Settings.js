@@ -26,7 +26,7 @@ let Settings = React.createClass({
     render() {
         return (
             <Container>
-                <Header>
+                <Header style={ {backgroundColor: 'black' }}>
                     <Button transparent>
                         <Icon name='ios-arrow-back' onPress={Actions.App}/>
                     </Button>

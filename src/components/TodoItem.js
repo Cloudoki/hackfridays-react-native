@@ -34,7 +34,7 @@ let styles = StyleSheet.create({
     remove: {
       position: 'absolute',
       right: 0,
-      color:'red'
+      // color:'red'
     },
     toggle: {
       position: 'absolute',
@@ -93,7 +93,7 @@ let TodoItem = React.createClass({
             <Text>{todo.text}</Text>
             {!this.props.isSettings ?
               (
-                <Icon onPress={() => this.handleDelete(todo.id)} name='ios-close-circle' style={styles.remove}/>
+                <Icon onPress={() => this.handleDelete(todo.id)} name='ios-trash-outline' style={styles.remove}/>
               ) : (
                 <Switch
                   onValueChange={(value) => this.toggleSwitch(todo, value)}

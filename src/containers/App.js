@@ -76,9 +76,13 @@ let styles = StyleSheet.create({
     marginRight: 10
   },
   wrapper: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    flexDirection: 'row'
+    // justifyContent: 'flex-end',
+    // alignItems: 'flex-end',
+    // flexDirection: 'row'
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 2
   }
 })
 
@@ -96,10 +100,10 @@ let App = React.createClass({
   const goToSettings = () => Actions.Settings({settings: this.props.settings});
     return (
       <View style={styles.container}>
-        <TodoList todos={this.props.todos} actions={this.props.actions}/>
         <View style={styles.wrapper}>
-          <Button style={styles.button} onPress={goToSettings}><Icon name="ios-add" /></Button>
+          <Button style={styles.button} transparent onPress={goToSettings}><Icon name="md-settings" /></Button>
         </View>
+        <TodoList todos={this.props.todos} actions={this.props.actions}/>
       </View>
     )
   }
