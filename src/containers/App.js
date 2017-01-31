@@ -14,11 +14,11 @@
  */
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Actions } from 'react-native-router-flux';
 
 /**
  * Project actions
  */
-import * as authActions from '../reducers/auth/authActions'
 import * as deviceActions from '../reducers/device/deviceActions'
 import * as globalActions from '../reducers/global/globalActions'
 import * as todoActions from '../reducers/todo/todoActions'
@@ -31,14 +31,15 @@ import
 {
     StyleSheet,
     View,
-    Text
+    Text,
+    // Button
 }
 from 'react-native'
+import {Button, Icon} from 'native-base';
 
 /**
  * The Header will display a Image and support Hot Loading
  */
-import Header from '../components/Header'
 import TodoList from '../components/TodoList'
 
 /**
@@ -47,16 +48,12 @@ import TodoList from '../components/TodoList'
 function mapStateToProps (state) {
   return {
     deviceVersion: state.device.version,
-    auth: {
-      form: {
-        isFetching: state.auth.form.isFetching
-      }
-    },
     global: {
       currentState: state.global.currentState,
       showState: state.global.showState
     },
-    todos : state.todos
+    todos : state.todos,
+    settings: state.settings
   }
 }
 
@@ -65,56 +62,44 @@ function mapStateToProps (state) {
  */
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators({ ...authActions, ...deviceActions, ...globalActions, ...todoActions }, dispatch)
+    actions: bindActionCreators({ ...deviceActions, ...globalActions, ...todoActions }, dispatch)
   }
 }
 
-var styles = StyleSheet.create({
+let styles = StyleSheet.create({
   container: {
-    // borderTopWidth: 2,
-    // borderBottomWidth: 2,
-    // marginTop: 80,
-    padding: 10
+    padding: 10,
   },
-  summary: {
-    fontFamily: 'BodoniSvtyTwoITCTT-Book',
-    fontSize: 18,
-    fontWeight: 'bold'
+  button: {
+    width: 50,
+    marginTop: 10,
+    marginRight: 10
+  },
+  wrapper: {
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    flexDirection: 'row'
   }
 })
 
 /**
  * ## App class
  */
-var reactMixin = require('react-mixin')
+let reactMixin = require('react-mixin')
 import TimerMixin from 'react-timer-mixin'
-/**
- * ### Translations
- */
-var I18n = require('react-native-i18n')
-import Translations from '../lib/Translations'
-I18n.translations = Translations
 
 
 let App = React.createClass({
-    /**
-     * See if there's a sessionToken from a previous login
-     *
-     */
-  componentDidMount () {
-        // Use a timer so App screen is displayed
-    this.setTimeout(
-            () => {
-              this.props.actions.getSessionToken()
-            },
-            2500
-        )
-  },
+
 
   render () {
+  const goToSettings = () => Actions.Settings({settings: this.props.settings});
     return (
       <View style={styles.container}>
-        <TodoList todos={this.props.todos.items} actions={this.props.actions}/>
+        <TodoList todos={this.props.todos} actions={this.props.actions}/>
+        <View style={styles.wrapper}>
+          <Button style={styles.button} onPress={goToSettings}><Icon name="ios-add" /></Button>
+        </View>
       </View>
     )
   }

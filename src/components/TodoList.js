@@ -1,7 +1,6 @@
 /**
- * # FormButton.js
+ * # TodoList.js
  *
- * Display a button that responds to onPress and is colored appropriately
  */
 'use strict'
 /**
@@ -18,22 +17,18 @@ import
   TextInput,
   Image,
   ListView,
+  ScrollView,
   // Button,
   Alert
 } from 'react-native'
 
 import TodoItem from './TodoItem'
-import {Button} from 'native-base';
-
-/**
- * The platform neutral button
- */
-// const Button = require('apsl-react-native-button')
+import {Button, InputGroup} from 'native-base';
 
 /**
  * ## Styles
  */
-var styles = StyleSheet.create({
+let styles = StyleSheet.create({
   container: {
     marginLeft: 10,
     marginRight: 10
@@ -46,25 +41,32 @@ var styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: -10
   },
-  header: {
+  title: {
     textAlign: 'center',
     fontSize: 25,
     fontWeight: 'bold'
+  },
+  header: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50
   }
 
 })
 
-var TodoList = React.createClass({
+let TodoList = React.createClass({
 
   getInitialState () {
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
     return {
       text: '',
       dataSource: ds.cloneWithRows(this.props.todos)
     }
   },
-
 
   // Needed to update the ListView after state changes
   componentWillReceiveProps (nextProps) {
@@ -90,20 +92,22 @@ var TodoList = React.createClass({
 
   render () {
     return (
-      <View style={styles.container}>
-          <Text style={styles.header}>2Pack List</Text>
-          <TextInput className="new-todo"
-                 value={this.state.text}
-                 placeholder="What do you need 2pack?"
-                 onChangeText={(text) => this._onChangeText(text)}
-                 onSubmitEditing={(event) => this._onSubmitTodo(event.nativeEvent.text)}/>
+      <ScrollView style={styles.container}>
+          <View style={styles.header}>
+            <Image style={styles.avatar} source={require('../images/2pac.jpg')}/>
+            <Text style={styles.title}>2Pack List</Text>
+          </View>
+          <TextInput value={this.state.text}
+                     placeholder="What do you need 2pack?"
+                     onChangeText={(text) => this._onChangeText(text)}
+                     onSubmitEditing={(event) => this._onSubmitTodo(event.nativeEvent.text)}/>
           <Button block onPress={() => this._onSubmitTodo(this.state.text)}>Add Item</Button>
           <ListView
             style={styles.list}
             dataSource={this.state.dataSource}
             renderRow={(rowData) => <TodoItem todo={rowData}></TodoItem>}
           />
-      </View>
+      </ScrollView>
     )
   }
 })

@@ -45,16 +45,6 @@ import {
  */
 import configureStore from './lib/configureStore'
 
-/**
- * ### Translations
- */
-var I18n = require('react-native-i18n')
-
-// Support fallbacks so en-US & en-BR both use en
-I18n.fallbacks = true
-
-import Translations from './lib/Translations'
-I18n.translations = Translations
 
 /**
  * ### containers
@@ -63,13 +53,7 @@ I18n.translations = Translations
  *
  */
 import App from './containers/App'
-import Login from './containers/Login'
-import Logout from './containers/Logout'
-import Register from './containers/Register'
-import ForgotPassword from './containers/ForgotPassword'
-import Profile from './containers/Profile'
-import Main from './containers/Main'
-import Subview from './containers/Subview'
+import Settings from './containers/Settings'
 
 /**
  * ### icons
@@ -91,11 +75,10 @@ import {setStore} from './reducers/global/globalActions'
  * Snowflake explicitly defines initial state
  *
  */
-import AuthInitialState from './reducers/auth/authInitialState'
 import DeviceInitialState from './reducers/device/deviceInitialState'
 import GlobalInitialState from './reducers/global/globalInitialState'
-import ProfileInitialState from './reducers/profile/profileInitialState'
 import TodoInitialState from './reducers/todo/todoInitialState'
+import SettingsInitialState from './reducers/settings/settingsInitialState'
 
 /**
  *  The version of the app but not  displayed yet
@@ -111,11 +94,10 @@ var VERSION = pack.version
  */
 function getInitialState () {
   const _initState = {
-    auth: new AuthInitialState(),
     device: (new DeviceInitialState()).set('isMobile', true),
     global: (new GlobalInitialState()),
-    profile: new ProfileInitialState(),
-    todos: TodoInitialState // not using Immutable Record like the others
+    todos: TodoInitialState.data, // not using Immutable Record like the others
+    settings: SettingsInitialState.data
   }
   return _initState
 }
@@ -170,10 +152,8 @@ export default function native (platform) {
         <Provider store={store}>
           <Router sceneStyle={{ backgroundColor: 'white' }}>
             <Scene key='root' hideNavBar>
-              <Scene key='App'
-                component={App}
-                type='replace'
-                initial />
+              <Scene key='App' component={App} type='replace' initial />
+              <Scene key='Settings' component={Settings}/>
             </Scene>
           </Router>
         </Provider>

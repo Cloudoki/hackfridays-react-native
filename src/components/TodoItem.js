@@ -21,52 +21,86 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import * as todoActions from '../reducers/todo/todoActions'
+import * as settingsActions from '../reducers/settings/settingsActions'
 // import CheckBox from 'react-native-checkbox';
 import {Icon, CheckBox, ListItem} from 'native-base';
+import {Switch} from 'react-native';
 
 
 /**
  * ## Styles
  */
-var styles = StyleSheet.create({
+let styles = StyleSheet.create({
     remove: {
-    position: 'absolute',
-    right: 0,
-    color:'red'
-  }
+      position: 'absolute',
+      right: 0,
+      color:'red'
+    },
+    toggle: {
+      position: 'absolute',
+      right: 0
+    }
 
 })
 
 function mapDispatchToProps (dispatch) {
   return {
-    actions: bindActionCreators({ ...todoActions }, dispatch)
+    actions: bindActionCreators({ ...todoActions , ...settingsActions}, dispatch)
   }
 }
 
 
-var TodoItem = React.createClass({
+let TodoItem = React.createClass({
 
-    handleDelete(id) {
-      this.props.actions.deleteTodo(id)
-    },
+  getInitialState () {
+    return {
+      visible: this.props.todo.visible,
+    }
+  },
 
-    handleComplete(id) {
-      this.props.actions.completeTodo(id)
-    },
+  handleDelete(id) {
+    this.props.actions.deleteTodo(id)
+  },
+
+  handleComplete(id) {
+    this.props.actions.completeTodo(id)
+  },
+
+  toggleSwitch (setting, value) {
+    this.setState({
+      visible: value
+    })
+    if(!setting.visible) {
+      this.props.actions.addTodo(setting.text)
+    } else {
+      this.props.actions.deleteTodo(setting.id)
+    }
+    this.props.actions.editSetting(setting)
+  },
 
   render () {
-
     let todo = this.props.todo
     return (
       <View>
         <ListItem>
-          <CheckBox
-            label={todo.text}
-            checked={todo.completed}
-            onPress={() => this.handleComplete(todo.id)}
-            />
+          {!this.props.isSettings &&
+            <CheckBox
+              label={todo.text}
+              checked={todo.completed}
+              onPress={() => this.handleComplete(todo.id)}
+              />
+            }
             <Text>{todo.text}</Text>
-          <Icon onPress={() => this.handleDelete(todo.id)} name='ios-close-circle' style={styles.remove}/>
+            {!this.props.isSettings ?
+              (
+                <Icon onPress={() => this.handleDelete(todo.id)} name='ios-close-circle' style={styles.remove}/>
+              ) : (
+                <Switch
+                  onValueChange={(value) => this.toggleSwitch(todo, value)}
+                  style={styles.toggle}
+                  value={this.state.visible} />
+              )
+            }
         </ListItem>
       </View>
     )
