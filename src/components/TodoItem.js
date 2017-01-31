@@ -1,7 +1,6 @@
 /**
  * # TodoItem.js
  *
- * Display a button that responds to onPress and is colored appropriately
  */
 'use strict'
 /**
@@ -14,18 +13,15 @@ import
 {
   StyleSheet,
   View,
-  Text
+  Text,
+  Switch
 } from 'react-native'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
 import * as todoActions from '../reducers/todo/todoActions'
 import * as settingsActions from '../reducers/settings/settingsActions'
-// import CheckBox from 'react-native-checkbox';
 import {Icon, CheckBox, ListItem} from 'native-base';
-import {Switch} from 'react-native';
-
 
 /**
  * ## Styles
@@ -33,7 +29,7 @@ import {Switch} from 'react-native';
 let styles = StyleSheet.create({
     remove: {
       position: 'absolute',
-      right: 0,
+      right: 0
       // color:'red'
     },
     toggle: {

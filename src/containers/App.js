@@ -58,7 +58,7 @@ function mapStateToProps (state) {
 }
 
 /**
- * Bind all the actions from authActions, deviceActions and globalActions
+ * Bind all the actions from todoActions, deviceActions and globalActions
  */
 function mapDispatchToProps (dispatch) {
   return {
