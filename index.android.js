@@ -1,6 +1,6 @@
 'use strict'
 
-import snowflake from './src/snowflake'
+import ToPack from './src/ToPack'
 
-snowflake('android')
+ToPack('android')
 
