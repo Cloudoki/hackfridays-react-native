@@ -31,15 +31,12 @@ import
 {
     StyleSheet,
     View,
-    Text,
-    // Button
+    Text
 }
 from 'react-native'
 import {Button, Icon} from 'native-base';
 
-/**
- * The Header will display a Image and support Hot Loading
- */
+
 import TodoList from '../components/TodoList'
 
 /**
@@ -76,9 +73,6 @@ let styles = StyleSheet.create({
     marginRight: 10
   },
   wrapper: {
-    // justifyContent: 'flex-end',
-    // alignItems: 'flex-end',
-    // flexDirection: 'row'
     position: 'absolute',
     right: 0,
     top: 0,

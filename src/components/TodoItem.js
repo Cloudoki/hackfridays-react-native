@@ -27,16 +27,10 @@ import {Icon, CheckBox, ListItem} from 'native-base';
  * ## Styles
  */
 let styles = StyleSheet.create({
-    remove: {
-      position: 'absolute',
-      right: 0
-      // color:'red'
-    },
-    toggle: {
+    iconRight: {
       position: 'absolute',
       right: 0
     }
-
 })
 
 function mapDispatchToProps (dispatch) {
@@ -54,8 +48,11 @@ let TodoItem = React.createClass({
     }
   },
 
-  handleDelete(id) {
-    this.props.actions.deleteTodo(id)
+  handleDelete(todo) {
+    this.props.actions.deleteTodo(todo.id)
+
+    // If an item is removed from the list, its Settings toggleSwitch will be disabled ('visible' = false)
+    this.props.actions.editSetting(todo)
   },
 
   handleComplete(id) {
@@ -63,9 +60,12 @@ let TodoItem = React.createClass({
   },
 
   toggleSwitch (setting, value) {
+
+    // Force setState to update the switch
     this.setState({
       visible: value
     })
+
     if(!setting.visible) {
       this.props.actions.addTodo(setting.text)
     } else {
@@ -89,11 +89,11 @@ let TodoItem = React.createClass({
             <Text>{todo.text}</Text>
             {!this.props.isSettings ?
               (
-                <Icon onPress={() => this.handleDelete(todo.id)} name='ios-trash-outline' style={styles.remove}/>
+                <Icon onPress={() => this.handleDelete(todo)} name='ios-trash-outline' style={styles.iconRight}/>
               ) : (
                 <Switch
                   onValueChange={(value) => this.toggleSwitch(todo, value)}
-                  style={styles.toggle}
+                  style={styles.iconRight}
                   value={this.state.visible} />
               )
             }
